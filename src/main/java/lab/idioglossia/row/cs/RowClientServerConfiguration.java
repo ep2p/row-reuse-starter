@@ -1,5 +1,9 @@
 package lab.idioglossia.row.cs;
 
+import lab.idioglossia.row.client.RowClientFactory;
+import lab.idioglossia.row.client.http.RowHttpClientHolder;
+import lab.idioglossia.row.client.tyrus.RowClientConfig;
+import lab.idioglossia.row.client.ws.WebsocketSession;
 import lab.idioglossia.row.server.config.properties.WebSocketProperties;
 import lab.idioglossia.row.server.config.RowConfiguration;
 import lab.idioglossia.row.server.config.properties.HandlerProperties;
@@ -55,7 +59,14 @@ public class RowClientServerConfiguration {
         if(!csProperties.isReuse())
             return new RowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowWsListener, subscriptionRegistry, protocolService, handlerProperties.isTrackHeartbeats());
         else
-            return new ReusableRowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowWsListener, subscriptionRegistry, handlerProperties.isTrackHeartbeats(), reusedClientRegistry);
+            return new ReusableRowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowWsListener, subscriptionRegistry, protocolService, handlerProperties.isTrackHeartbeats(), reusedClientRegistry);
+    }
+
+    @Bean("rowClientFactory")
+    @Primary
+    @DependsOn({"rowClientConfig", "rowHttpClientHolder", "reusedClientRegistry"})
+    public RowClientFactory rowClientFactory(RowClientConfig<WebsocketSession> rowClientConfig, RowHttpClientHolder rowHttpClientHolder, ReusedClientRegistry reusedClientRegistry){
+        return new SpringReuseRowClientFactory(rowClientConfig, rowHttpClientHolder.getRowHttpClient(), reusedClientRegistry);
     }
 
 }

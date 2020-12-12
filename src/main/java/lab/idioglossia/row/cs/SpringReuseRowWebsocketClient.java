@@ -25,9 +25,8 @@ public class SpringReuseRowWebsocketClient implements RowClient {
     @Getter
     private SpringRowWebsocketSession springRowWebsocketSession;
 
-    public SpringReuseRowWebsocketClient(ReusedClientRegistry reusedClientRegistry, RowMessageHandler<SpringRowWebsocketSession> rowMessageHandler, RowClientConfig<SpringRowWebsocketSession> rowClientConfig) {
+    public SpringReuseRowWebsocketClient(ReusedClientRegistry reusedClientRegistry, RowClientConfig<SpringRowWebsocketSession> rowClientConfig) {
         this.reusedClientRegistry = reusedClientRegistry;
-        this.rowMessageHandler = rowMessageHandler;
         this.rowClientConfig = rowClientConfig;
         this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
     }
