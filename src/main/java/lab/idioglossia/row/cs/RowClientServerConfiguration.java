@@ -6,6 +6,7 @@ import lab.idioglossia.row.server.config.properties.HandlerProperties;
 import lab.idioglossia.row.server.filter.RowFilterChain;
 import lab.idioglossia.row.server.repository.RowSessionRegistry;
 import lab.idioglossia.row.server.repository.SubscriptionRegistry;
+import lab.idioglossia.row.server.service.ProtocolService;
 import lab.idioglossia.row.server.ws.RowWebSocketHandler;
 import lab.idioglossia.row.server.ws.RowWsListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +28,17 @@ public class RowClientServerConfiguration {
     private final WebSocketProperties webSocketProperties;
     private final HandlerProperties handlerProperties;
     private final RowSessionRegistry rowSessionRegistry;
-    private final RowFilterChain rowFilterChain;
+    private final ProtocolService protocolService;
     private final RowWsListener rowWsListener;
     private final SubscriptionRegistry subscriptionRegistry;
 
     @Autowired
-    public RowClientServerConfiguration(CSProperties csProperties, WebSocketProperties webSocketProperties, HandlerProperties handlerProperties, RowSessionRegistry rowSessionRegistry, RowFilterChain rowFilterChain, RowWsListener rowWsListener, SubscriptionRegistry subscriptionRegistry) {
+    public RowClientServerConfiguration(CSProperties csProperties, WebSocketProperties webSocketProperties, HandlerProperties handlerProperties, RowSessionRegistry rowSessionRegistry, ProtocolService protocolService, RowWsListener rowWsListener, SubscriptionRegistry subscriptionRegistry) {
         this.csProperties = csProperties;
         this.webSocketProperties = webSocketProperties;
         this.handlerProperties = handlerProperties;
         this.rowSessionRegistry = rowSessionRegistry;
-        this.rowFilterChain = rowFilterChain;
+        this.protocolService = protocolService;
         this.rowWsListener = rowWsListener;
         this.subscriptionRegistry = subscriptionRegistry;
     }
@@ -47,14 +48,14 @@ public class RowClientServerConfiguration {
         return new ReusedClientRegistry();
     }
 
-    @Bean
+    @Bean("rowWebSocketHandler")
     @Primary
     @DependsOn({"reusedClientRegistry"})
     public WebSocketHandler rowWebSocketHandler(ReusedClientRegistry reusedClientRegistry){
         if(!csProperties.isReuse())
-            return new RowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowFilterChain, rowWsListener, subscriptionRegistry, handlerProperties.isTrackHeartbeats());
+            return new RowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowWsListener, subscriptionRegistry, protocolService, handlerProperties.isTrackHeartbeats());
         else
-            return new ReusableRowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowFilterChain, rowWsListener, subscriptionRegistry, handlerProperties.isTrackHeartbeats(), reusedClientRegistry);
+            return new ReusableRowWebSocketHandler(rowSessionRegistry, webSocketProperties, rowWsListener, subscriptionRegistry, handlerProperties.isTrackHeartbeats(), reusedClientRegistry);
     }
 
 }
