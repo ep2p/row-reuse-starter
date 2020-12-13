@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>lab.idioglossia</groupId>
 	<artifactId>row-cs-starter</artifactId>
-	<version>1.0.0-RELEASE</version>
+	<version>1.0.1-RELEASE</version>
 	<name>Springboot ROW client server starter</name>
 	<developers>
 		<developer>
