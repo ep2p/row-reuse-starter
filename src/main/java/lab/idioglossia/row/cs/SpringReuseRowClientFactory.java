@@ -2,11 +2,11 @@ package lab.idioglossia.row.cs;
 
 import lab.idioglossia.row.client.*;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.ws.SpringRowWebsocketClient;
 import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
+import lab.idioglossia.row.server.service.ProtocolService;
+import lab.idioglossia.row.server.ws.SpringRowServerWebsocket;
 import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 public class SpringReuseRowClientFactory implements RowClientFactory<SpringRowWebsocketSession> {
     private RowClientConfig rowClientConfig;
@@ -25,7 +25,6 @@ public class SpringReuseRowClientFactory implements RowClientFactory<SpringRowWe
     }
 
     public RowClient getRowClient(RowClientConfig rowClientConfig){
-        Assert.notNull(rowClientConfig.getAddress(), "Address cant be null");
         if(rowHttpClient != null) {
             return getRowClient(rowClientConfig, this.rowHttpClient);
         }else {
@@ -37,8 +36,17 @@ public class SpringReuseRowClientFactory implements RowClientFactory<SpringRowWe
         return new HttpFallbackRowClientDecorator(new SpringReuseRowWebsocketClient(reusedClientRegistry, rowClientConfig), rowHttpClient);
     }
 
+    public RowClient getRowClient(RowClientConfig rowClientConfig, SpringRowServerWebsocket rowWebsocketSession){
+        SpringReuseRowWebsocketClient springReuseRowWebsocketClient = new SpringReuseRowWebsocketClient(reusedClientRegistry, rowClientConfig);
+        springReuseRowWebsocketClient.reuse(rowWebsocketSession);
+        return springReuseRowWebsocketClient;
+    }
+
     public RowClientConfig getRowClientConfig(){
-        return RowClientConfigHelper.clone(this.rowClientConfig);
+        RowClientConfig clone = RowClientConfigHelper.clone(this.rowClientConfig);
+        //todo: remove this line on newer version from client-starter
+        clone.setRowMessageHandlerProvider(this.rowClientConfig.getRowMessageHandlerProvider());
+        return clone;
     }
 
 }

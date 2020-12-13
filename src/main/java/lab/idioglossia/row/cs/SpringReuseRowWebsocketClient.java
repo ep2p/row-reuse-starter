@@ -4,11 +4,12 @@ import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.callback.ResponseCallback;
 import lab.idioglossia.row.client.callback.SubscriptionListener;
 import lab.idioglossia.row.client.model.RowRequest;
+import lab.idioglossia.row.client.tyrus.ConnectionRepository;
 import lab.idioglossia.row.client.tyrus.RequestSender;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.RowMessageHandler;
 import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
-import lab.idioglossia.row.client.ws.handler.PipelineFactory;
+import lab.idioglossia.row.server.ws.RowServerWebsocket;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.web.socket.WebSocketSession;
@@ -16,7 +17,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.IOException;
 
 public class SpringReuseRowWebsocketClient implements RowClient {
-    private final RequestSender requestSender;
+    private RequestSender requestSender;
     private final ReusedClientRegistry reusedClientRegistry;
     @Getter
     private RowMessageHandler<SpringRowWebsocketSession> rowMessageHandler;
@@ -28,7 +29,6 @@ public class SpringReuseRowWebsocketClient implements RowClient {
     public SpringReuseRowWebsocketClient(ReusedClientRegistry reusedClientRegistry, RowClientConfig<SpringRowWebsocketSession> rowClientConfig) {
         this.reusedClientRegistry = reusedClientRegistry;
         this.rowClientConfig = rowClientConfig;
-        this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
     }
 
     @Override
@@ -41,12 +41,14 @@ public class SpringReuseRowWebsocketClient implements RowClient {
         requestSender.sendSubscribe(rowRequest, responseCallback, subscriptionListener);
     }
 
-    public synchronized void reuse(WebSocketSession webSocketSession){
-        this.springRowWebsocketSession = new SpringRowWebsocketSession(rowClientConfig.getAttributes(), webSocketSession.getUri(), rowClientConfig.getWebsocketConfig());
-        this.springRowWebsocketSession.setNativeSession(webSocketSession);
-        reusedClientRegistry.register(webSocketSession.getId(), this);
+    public synchronized void reuse(RowServerWebsocket<WebSocketSession> rowServerWebsocket){
+        this.springRowWebsocketSession = new SpringRowWebsocketSession(rowClientConfig.getAttributes(), rowServerWebsocket.getUri(), rowClientConfig.getWebsocketConfig());
+        WebSocketSession nativeSession = rowServerWebsocket.getNativeSession(WebSocketSession.class);
+        this.springRowWebsocketSession.setNativeSession(nativeSession);
+        reusedClientRegistry.register(rowServerWebsocket.getId(), this);
         rowClientConfig.getConnectionRepository().setConnection(this.springRowWebsocketSession);
-        this.rowMessageHandler = new RowMessageHandler<SpringRowWebsocketSession>(PipelineFactory.getPipeline(this.rowClientConfig), rowClientConfig.getConnectionRepository(), rowClientConfig.getRowTransportListener(), this);
+        this.rowMessageHandler = rowClientConfig.getRowMessageHandlerProvider().provide(rowClientConfig, this);
+        this.requestSender = new RequestSender(rowClientConfig.getConnectionRepository(), rowClientConfig.getMessageIdGenerator(), rowClientConfig.getCallbackRegistry(), rowClientConfig.getSubscriptionListenerRegistry(), rowClientConfig.getMessageConverter());
     }
 
     @SneakyThrows
