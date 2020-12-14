@@ -15,7 +15,4 @@ row:
     type: spring
   handler:
     track-heartbeats: false
-spring:
-  main:
-    allow-bean-definition-overriding: true
 ```
