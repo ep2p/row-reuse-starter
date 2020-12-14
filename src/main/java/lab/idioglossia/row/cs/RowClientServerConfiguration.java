@@ -2,6 +2,7 @@ package lab.idioglossia.row.cs;
 
 import lab.idioglossia.row.client.RowClient;
 import lab.idioglossia.row.client.RowMessageHandlerProvider;
+import lab.idioglossia.row.client.config.RowClientConfiguration;
 import lab.idioglossia.row.client.http.RowHttpClientHolder;
 import lab.idioglossia.row.client.tyrus.RowClientConfig;
 import lab.idioglossia.row.client.tyrus.RowMessageHandler;
@@ -14,17 +15,18 @@ import lab.idioglossia.row.server.repository.SubscriptionRegistry;
 import lab.idioglossia.row.server.service.ProtocolService;
 import lab.idioglossia.row.server.ws.RowWsListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.socket.WebSocketHandler;
 
-import javax.annotation.PostConstruct;
-
 @Configuration
+@AutoConfigureBefore(RowClientConfiguration.class)
 @EnableConfigurationProperties(CSProperties.class)
 @ConditionalOnProperty(value = "row.enable", havingValue = "true")
 public class RowClientServerConfiguration {
@@ -36,7 +38,7 @@ public class RowClientServerConfiguration {
     private final HandlerProperties handlerProperties;
 
     @Autowired
-    public RowClientServerConfiguration(ProtocolService protocolService, RowSessionRegistry rowSessionRegistry, WebSocketProperties webSocketProperties, RowWsListener rowWsListener, SubscriptionRegistry subscriptionRegistry, HandlerProperties handlerProperties) {
+    public RowClientServerConfiguration(@Lazy ProtocolService protocolService,@Lazy RowSessionRegistry rowSessionRegistry,@Lazy WebSocketProperties webSocketProperties,@Lazy RowWsListener rowWsListener,@Lazy SubscriptionRegistry subscriptionRegistry,@Lazy HandlerProperties handlerProperties) {
         this.protocolService = protocolService;
         this.rowSessionRegistry = rowSessionRegistry;
         this.webSocketProperties = webSocketProperties;
