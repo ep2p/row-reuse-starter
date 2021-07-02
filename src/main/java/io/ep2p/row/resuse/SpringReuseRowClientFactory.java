@@ -1,10 +1,9 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.client.*;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
-import lab.idioglossia.row.server.service.ProtocolService;
-import lab.idioglossia.row.server.ws.SpringRowServerWebsocket;
+import io.ep2p.row.client.*;
+import io.ep2p.row.client.RowClientConfig;
+import io.ep2p.row.client.ws.SpringRowWebsocketSession;
+import io.ep2p.row.server.ws.SpringRowServerWebsocket;
 import lombok.SneakyThrows;
 import org.springframework.lang.Nullable;
 

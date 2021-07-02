@@ -1,15 +1,14 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.client.RowClient;
-import lab.idioglossia.row.client.callback.ResponseCallback;
-import lab.idioglossia.row.client.callback.SubscriptionListener;
-import lab.idioglossia.row.client.model.RowRequest;
-import lab.idioglossia.row.client.tyrus.ConnectionRepository;
-import lab.idioglossia.row.client.tyrus.RequestSender;
-import lab.idioglossia.row.client.tyrus.RowClientConfig;
-import lab.idioglossia.row.client.tyrus.RowMessageHandler;
-import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
-import lab.idioglossia.row.server.ws.RowServerWebsocket;
+import io.ep2p.row.client.RowClient;
+import io.ep2p.row.client.callback.ResponseCallback;
+import io.ep2p.row.client.callback.SubscriptionListener;
+import io.ep2p.row.client.model.RowRequest;
+import io.ep2p.row.client.RequestSender;
+import io.ep2p.row.client.RowClientConfig;
+import io.ep2p.row.client.RowMessageHandler;
+import io.ep2p.row.client.ws.SpringRowWebsocketSession;
+import io.ep2p.row.server.ws.RowServerWebsocket;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.web.socket.WebSocketSession;

@@ -1,10 +1,10 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.client.ws.RowWebsocketSession;
-import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
-import lab.idioglossia.row.client.ws.WebsocketSession;
-import lab.idioglossia.row.server.ws.RowServerWebsocket;
-import lab.idioglossia.row.server.ws.SpringRowServerWebsocket;
+import io.ep2p.row.client.ws.RowWebsocketSession;
+import io.ep2p.row.client.ws.SpringRowWebsocketSession;
+import io.ep2p.row.client.ws.WebsocketSession;
+import io.ep2p.row.server.ws.RowServerWebsocket;
+import io.ep2p.row.server.ws.SpringRowServerWebsocket;
 import org.springframework.web.socket.WebSocketSession;
 
 public interface ClientToServerWebsocketPort {

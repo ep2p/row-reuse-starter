@@ -1,4 +1,4 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,15 +1,15 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.client.RowClient;
-import lab.idioglossia.row.client.callback.RowTransportListener;
-import lab.idioglossia.row.client.exception.MessageDataProcessingException;
-import lab.idioglossia.row.client.pipeline.StoppablePipeline;
-import lab.idioglossia.row.client.tyrus.ConnectionRepository;
-import lab.idioglossia.row.client.tyrus.RowMessageHandler;
-import lab.idioglossia.row.client.ws.SpringRowWebsocketSession;
-import lab.idioglossia.row.client.ws.WebsocketSession;
-import lab.idioglossia.row.client.ws.handler.MessageHandlerInput;
-import lab.idioglossia.row.server.service.ProtocolService;
+import io.ep2p.row.client.RowClient;
+import io.ep2p.row.client.callback.RowTransportListener;
+import io.ep2p.row.client.exception.MessageDataProcessingException;
+import io.ep2p.row.client.pipeline.StoppablePipeline;
+import io.ep2p.row.client.ConnectionRepository;
+import io.ep2p.row.client.RowMessageHandler;
+import io.ep2p.row.client.ws.SpringRowWebsocketSession;
+import io.ep2p.row.client.ws.WebsocketSession;
+import io.ep2p.row.client.ws.handler.MessageHandlerInput;
+import io.ep2p.row.server.service.ProtocolService;
 import org.springframework.web.socket.TextMessage;
 
 import javax.websocket.CloseReason;

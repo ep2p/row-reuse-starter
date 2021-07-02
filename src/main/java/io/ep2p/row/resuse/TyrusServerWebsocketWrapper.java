@@ -1,6 +1,6 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.server.ws.RowServerWebsocket;
+import io.ep2p.row.server.ws.RowServerWebsocket;
 import org.springframework.web.socket.CloseStatus;
 
 import javax.websocket.CloseReason;

@@ -1,12 +1,12 @@
-package lab.idioglossia.row.cs;
+package io.ep2p.row.resuse;
 
-import lab.idioglossia.row.server.config.properties.WebSocketProperties;
-import lab.idioglossia.row.server.repository.RowSessionRegistry;
-import lab.idioglossia.row.server.repository.SubscriptionRegistry;
-import lab.idioglossia.row.server.service.ProtocolService;
-import lab.idioglossia.row.server.utl.WebsocketSessionUtil;
-import lab.idioglossia.row.server.ws.RowWebSocketHandler;
-import lab.idioglossia.row.server.ws.RowWsListener;
+import io.ep2p.row.server.config.properties.WebSocketProperties;
+import io.ep2p.row.server.repository.RowSessionRegistry;
+import io.ep2p.row.server.repository.SubscriptionRegistry;
+import io.ep2p.row.server.service.ProtocolService;
+import io.ep2p.row.server.utl.WebsocketSessionUtil;
+import io.ep2p.row.server.ws.RowWebSocketHandler;
+import io.ep2p.row.server.ws.RowWsListener;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
