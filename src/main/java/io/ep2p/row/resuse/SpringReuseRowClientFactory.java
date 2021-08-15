@@ -42,10 +42,7 @@ public class SpringReuseRowClientFactory implements RowClientFactory<SpringRowWe
     }
 
     public RowClientConfig getRowClientConfig(){
-        RowClientConfig clone = RowClientConfigHelper.clone(this.rowClientConfig);
-        //todo: remove this line on newer version from client-starter
-        clone.setRowMessageHandlerProvider(this.rowClientConfig.getRowMessageHandlerProvider());
-        return clone;
+        return RowClientConfigHelper.clone(this.rowClientConfig);
     }
 
 }
